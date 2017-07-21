@@ -1,0 +1,30 @@
+﻿@model MailAPI.Models.ApiKey
+@{
+    ViewBag.Title = "Create API Key";
+}
+
+<h2>Request API Key</h2>
+Use this function to create an API key for your application to use the mail server.
+
+<form asp-controller="ApiKey" asp-action="Create" method="post" class="form-horizontal" role="form">
+    <div class="form-horizontal">
+        <div asp-validation-summary="All" class="text-danger">
+            <div class="form-group">
+                <div class="col-md-10">
+                    <label asp-for="AssociatedApplication"></label>
+                    <input asp-for="AssociatedApplication" class="form-control" />
+                    <span asp-validation-for="AssociatedApplication" class="text-danger"></span>
+                </div>
+            </div>
+
+            <p>
+                By clicking &quot;Create API Key&quot; you agree to store the provided key securely in your application. You are certifying you understand this key is only to be used with the application stated above. You also certify you understand your API key can be revoked at any time due to use of email in violation of current Information Technology policies.
+            </p>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-cog"></span> Create API Key</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

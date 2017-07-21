@@ -1,0 +1,132 @@
+﻿@model List<MailAPI.Models.ApiKey>
+@{
+    ViewData["Title"] = "API Key List Management";
+}
+
+@if (!ViewBag.UserKey.Equals("Not a new key"))
+{
+    <div class="row">
+    &nbsp;
+    </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+               Your key has been created!
+            </div>
+            <div class="panel-body">
+                <p>
+                    Your Mail API Key has been generated.
+                </p>
+                <pre>@ViewBag.UserKey</pre>
+                <p>
+                    <strong>Copy this key down to a safe place!</strong> For security, it cannot be retrieved once you leave this screen. If you lose this key, you'll need to request a new one and revoke this one.
+                </p>
+            </div>
+        </div>
+    </div>
+}
+
+    <div class="container">
+        <h2>Existing API Keys</h2>
+        <div class="row">
+            <table class="table table-bordered table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            Application name
+                        </th>
+                        <th>
+                            Issue Date
+                        </th>
+                        <th>
+                            No. of Uses
+                        </th>
+                        <th>
+                            Activation Status
+                        </th>
+                        <th>
+                            Revoke Key
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (MailAPI.Models.ApiKey key in Model)
+                    {
+                        <tr>
+                            <td colspan="2">
+                                @key.AssociatedApplication
+                            </td>
+                            <td>
+                                @key.TimeStamp
+                            </td>
+                            <td>
+                                @key.Uses
+                            </td>
+                            <td>
+                                @if (key.ActiveStatus == true)
+                                {
+                                    <span>Active</span>
+                                }
+                                else
+                                {
+                                    <span>Inactive</span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (key.ActiveStatus == true)
+                                {
+                                    <form method="post" action="Revoke">
+                                        <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Revoke Key</button>
+                                        <input type="hidden" name="ApiKeyId" value="@key.ApiKeyId" />
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span>Cannot re-activate.</span>
+                                }
+                            </td>
+
+
+
+                        </tr>
+
+                    }
+                </tbody>
+            </table> 
+        </div>
+    </div>
+
+    @if (!ViewBag.Message.Equals("No action"))
+    {
+         <!-- Modal -->
+        <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="messageModalLAbel">Important Information</h4>
+                    </div>
+                    <div class="modal-body">
+                        @ViewBag.Message
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @section scripts{ 
+        <script>
+            $(document).ready(function () {
+                if ($("#messageModal").length) {
+                    $("#messageModal").modal('show');
+                };
+
+            });
+        </script>
+    }
+
